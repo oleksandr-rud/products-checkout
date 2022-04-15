@@ -29,7 +29,6 @@ export class CheckoutItem {
 
 // Checkout class
 export default class Checkout {
-    private products: Product[] = [];
     private checkoutProductsMap: Map<string, CheckoutItem>;
 
     constructor(protected readonly pricingRules: PricingRules) {
@@ -50,7 +49,6 @@ export default class Checkout {
     scan(product: Product): void {
         this.addCheckoutItem(product);
         this.pricingRules.applyDiscount(product.sku, this.getCheckoutItem(product.sku));
-        this.products.push(product);
     }
 
     total(): number {

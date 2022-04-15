@@ -16,6 +16,5 @@ export default class PricingRules {
         if (discount.checkDiscountRules(checkoutItem)) {
             checkoutItem.setDiscount(discount.calculateDiscount(checkoutItem));
         }
-        console.log('checkoutItem', checkoutItem)
     }
 }

@@ -1,18 +1,18 @@
-import Product from "./product";
+import { CheckoutItem } from "./checkout";
 
 export interface Discount {
     productSKU: string;
-    calculateDiscount(products: Product[]): number;
+    checkDiscountRules(checkoutItem: CheckoutItem): boolean;
+    calculateDiscount(checkoutItem: CheckoutItem): number;
 }
 
 export class AppleTVDiscount implements Discount {
     productSKU = "atv";
-    calculateDiscount = (products: Product[]): number => {
-        const [{price: productPrice}] = products
-        if (products.length >= 3) {
-            return productPrice * -1;
-        }
-        return 0;
+    checkDiscountRules(checkoutItem: CheckoutItem): boolean {
+        return checkoutItem.quantity >= 3;
+    }
+    calculateDiscount(checkoutItem: CheckoutItem): number {
+        return checkoutItem.itemPrice;
     }
 }
 
@@ -20,11 +20,10 @@ export class IPadDiscount implements Discount {
     productSKU = "ipd";
     private readonly priceWithDiscount = 499.99;
 
-    calculateDiscount = (products: Product[]): number => {
-        const [{price: productPrice}] = products
-        if (products.length >= 4) {
-            return (productPrice - this.priceWithDiscount) * products.length * -1;
-        }
-        return 0;
+    checkDiscountRules(checkoutItem: CheckoutItem): boolean {
+        return checkoutItem.quantity >= 4;
+    }
+    calculateDiscount(checkoutItem: CheckoutItem): number {
+        return (checkoutItem.itemPrice - this.priceWithDiscount) * checkoutItem.quantity;
     }
 }
